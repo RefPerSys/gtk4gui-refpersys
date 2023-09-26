@@ -13,8 +13,10 @@ ASTYLEFLAGS= -v -s2 --style=gnu
 GTKRPS_HOST := $(shell /bin/hostname -f)
 GTKRPS_ARCH := $(shell /bin/uname -m)
 GTKRPS_OPERSYS := $(shell /bin/uname -o | /bin/sed 1s/[^a-zA-Z0-9_]/_/g )
-PREPROFLAGS= $(shell pkg-config --cflags gtkmm-4.0)
-CXXFLAGS= $(OPTIMFLAGS) $(PREPROFLAGS) \
+
+#XTRAPREPROFLAGS= -H
+PREPROFLAGS= $(XTRAPREPROFLAGS) $(shell pkg-config --cflags gtkmm-4.0)
+CXXFLAGS= -fPIE $(OPTIMFLAGS) $(PREPROFLAGS) \
      -DGIT_ID=\"$(GTKRPS_GIT_ID)\" \
      -DSHORTGIT_ID=\"$(GTKRPS_SHORTGIT_ID)\" \
      -DGTKRPS_HOST=\"$(GTKRPS_HOST)\" -DGTKRPS_ARCH=\"$(GTKRPS_ARCH)\" \
@@ -43,3 +45,4 @@ install: guigtkrps
 	sudo /usr/bin/install  --backup  --preserve-timestamps  guifltkrps $(DESTDIR)/bin/
 
 guifltkrps: $(CPPOBJECTS)
+	$(LINK.cc) -rdynamic -fPIE $(CPPOBJECTS) -ldl $(shell  pkg-config --libs gtkmm-4.0)

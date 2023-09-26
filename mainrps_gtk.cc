@@ -15,16 +15,63 @@
 
 #include "gtkrps.hh"
 
+#include "gtkmm/version.h"
 
-const char*rpsgtk_progname;
-const char rpsgtk_git_id[] = GIT_ID;
-const char rpsgtk_shortgit_id[] = SHORTGIT_ID;
-char rpsgtk_myhostname[]= GTKRPS_HOST;
-const char rpsgtk_host[]= GTKRPS_HOST;
-const char rpsgtk_arch[] = GTKRPS_ARCH;
-const char rpsgtk_opersys[] = GTKRPS_OPERSYS;
-const char rpsgtk_timestamp[] = __DATE__ "@" __TIME__;
+const char*gtkrps_progname;
+const char gtkrps_git_id[] = GIT_ID;
+const char gtkrps_shortgit_id[] = SHORTGIT_ID;
+const char gtkrps_buildhost[]= GTKRPS_HOST;
+const char gtkrps_arch[] = GTKRPS_ARCH;
+const char gtkrps_opersys[] = GTKRPS_OPERSYS;
+const char gtkrps_timestamp[] = __DATE__ "@" __TIME__;
 
 char gtkrps_myhostname[80];
 void* gtkrps_dlhandle;
 bool gtkrps_stderr_istty;
+
+
+static void
+gtkrps_show_version(void)
+{
+  printf("%s version information\n", gtkrps_progname);
+  printf("\t full git %s\n", gtkrps_git_id);
+  printf("\t short git %s\n", gtkrps_shortgit_id);
+  printf("\t build host %s\n", gtkrps_buildhost);
+  printf("\t arch: %s\n", gtkrps_arch);
+  printf("\t OS: %s\n", gtkrps_opersys);
+  printf("\t built: %s\n", gtkrps_timestamp);
+  /// for some reason, don't work!
+#if 0 && bad
+  printf("\t GTKmm version: %d.%d.%d\n",
+         gtkmm_major_version, gtkmm_minor_version, gtkmm_micro_version);
+#endif
+} // end gtkrps_show_version
+
+
+void
+gtkrps_fatal_stop_at(const char*fil, int lin)
+{
+  fprintf(stderr, "%s FATAL STOP (%s:%d) pid %d shortgit %s\n",
+          gtkrps_progname,
+          fil, lin,
+          (int)getpid(), gtkrps_shortgit_id);
+  abort();
+} // end gtkrps_fatal_stop_at
+
+int
+main(int argc, char**argv)
+{
+  assert(argc>0);
+  gtkrps_progname = argv[0];
+  gtkrps_dlhandle = dlopen(nullptr, RTLD_NOW| RTLD_GLOBAL);
+  if (!gtkrps_dlhandle)
+    GTKRPS_FATALOUT("failed to dlopen main program: " << dlerror());
+  gtkrps_stderr_istty = isatty(STDERR_FILENO);
+  memset (gtkrps_myhostname, 0, sizeof(gtkrps_myhostname));
+  gethostname(gtkrps_myhostname, sizeof(gtkrps_myhostname)-4);
+  if (argc > 1 && !strcmp(argv[1], "--version"))
+    {
+      gtkrps_show_version();
+      exit (EXIT_SUCCESS);
+    };
+} // end main
