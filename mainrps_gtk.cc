@@ -61,6 +61,7 @@ gtkrps_fatal_stop_at(const char*fil, int lin)
 } // end gtkrps_fatal_stop_at
 
 extern "C" const char gtkrpsui_guirefpersys[];
+Glib::RefPtr<Gtk::Application> gtkrps_app;
 int
 main(int argc, char**argv)
 {
@@ -77,6 +78,8 @@ main(int argc, char**argv)
       gtkrps_show_version();
       exit (EXIT_SUCCESS);
     };
+  gtkrps_app = Gtk::Application::create ("org.refpersys.gtk4gui");
   Glib::ustring builder_str(gtkrpsui_guirefpersys);
   auto builder = Gtk::Builder::create_from_string(builder_str);
+  return gtkrps_app->run(argc, argv);
 } // end main
