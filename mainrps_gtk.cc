@@ -77,5 +77,6 @@ main(int argc, char**argv)
       gtkrps_show_version();
       exit (EXIT_SUCCESS);
     };
-  auto builder = Gtk::Builder::create_from_string(gtkrpsui_guirefpersys);
+  Glib::ustring builder_str(gtkrpsui_guirefpersys);
+  auto builder = Gtk::Builder::create_from_string(builder_str);
 } // end main
