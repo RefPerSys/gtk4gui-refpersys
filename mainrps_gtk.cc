@@ -25,6 +25,7 @@ const char gtkrps_arch[] = GTKRPS_ARCH;
 const char gtkrps_opersys[] = GTKRPS_OPERSYS;
 const char gtkrps_timestamp[] = __DATE__ "@" __TIME__;
 
+extern "C" const char guirefpersys_ui[];
 char gtkrps_myhostname[80];
 void* gtkrps_dlhandle;
 bool gtkrps_stderr_istty;

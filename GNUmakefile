@@ -4,6 +4,7 @@
 # © Copyright 2023 Basile Starynkevitch
 #
 CXX?= g++-13
+RESWRAP?= reswrap
 OPTIMFLAGS?= -Og
 DEBUGFLAGS= -g3
 GTKRPS_GIT_ID:= $(shell ./do-generate-gitid.sh)
@@ -28,11 +29,12 @@ CPPHEADERS= $(wildcard *.hh)
 
 .PHONY: all objects clean indent homeinstall install
 
+.SECONDARY: guirefpersys_ui.cc
 
-all: guifltkrps
+all: guigtkrps
 
 clean:
-	$(RM) *.o *~ *.orig guifltkrps a.out
+	$(RM) *.o *~ *.orig guifltkrps guirefpersys_ui.cc a.out
 
 indent:
 	for f in *.hh ; do  $(ASTYLE) $(ASTYLEFLAGS) $$f ; done
@@ -44,5 +46,9 @@ homeinstall: guigtkrps
 install: guigtkrps
 	sudo /usr/bin/install  --backup  --preserve-timestamps  guifltkrps $(DESTDIR)/bin/
 
-guifltkrps: $(CPPOBJECTS)
-	$(LINK.cc) -rdynamic -fPIE $(CPPOBJECTS) -ldl $(shell  pkg-config --libs gtkmm-4.0)
+
+guirefpersys_ui.cc: guirefpersys.ui
+	$(RESWRAP) -a -p gtkrpsui $^ > $@
+
+guigtkrps: $(CPPOBJECTS) guirefpersys_ui.o
+	$(LINK.cc) -rdynamic -fPIE $(CPPOBJECTS)  guirefpersys_ui.o -o $@ -ldl $(shell  pkg-config --libs gtkmm-4.0)

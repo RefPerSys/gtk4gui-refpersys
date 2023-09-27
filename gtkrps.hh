@@ -1,5 +1,21 @@
 #ifndef GTKRPS_INCLUDED_H
 
+//  SPDX-License-Identifier: MIT
+
+/******
+ * © Copyright 2023 Basile Starynkevitch
+ *
+ * this file gtkrps.hh is the unique C++ header file
+ *
+ * A GTK4mm toolkit graphical interface (see fox-toolkit.org)
+ * to the RefPerSys open source (GPLv3+ licensed) inference engine
+ *
+ * see gnome.pages.gitlab.gnome.org/gtkmm-documentation/
+ *
+ * See refpersys.org and code on https://github.com/RefPerSys/
+ *
+ ******/
+
 #ifndef GIT_ID
 #error GIT_ID should be defined by compilation command
 #endif
