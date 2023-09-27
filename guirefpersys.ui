@@ -13,4 +13,5 @@
         <property name="orientation">vertical</property>
       </object>
     </child>
+  </object>
 </interface>
