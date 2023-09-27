@@ -38,7 +38,7 @@ CPPHEADERS= $(wildcard *.hh)
 all: guigtkrps
 
 clean:
-	$(RM) *.o *~ *.orig guifltkrps guirefpersys_ui.c a.out
+	$(RM) *.o *~ *.orig guigtkrps guirefpersys_ui.c a.out
 
 indent:
 	for f in *.hh ; do  $(ASTYLE) $(ASTYLEFLAGS) $$f ; done
@@ -55,6 +55,7 @@ guirefpersys_ui.c: guirefpersys.ui
 	$(RESWRAP) -a -p gtkrpsui_ $^ > $@
 
 guirefpersys_ui.o: guirefpersys_ui.c
-	$(CC) -Og -c $^ -o $@
+	$(CC) -Og -g -c $^ -o $@
+
 guigtkrps: $(CPPOBJECTS) guirefpersys_ui.o
 	$(LINK.cc) -rdynamic -fPIE $(CPPOBJECTS)  guirefpersys_ui.o -o $@ -ldl $(shell  pkg-config --libs gtkmm-4.0)
