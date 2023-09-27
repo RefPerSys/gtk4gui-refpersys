@@ -3,7 +3,11 @@
 #
 # © Copyright 2023 Basile Starynkevitch
 #
+CC?= gcc-13
 CXX?= g++-13
+
+## the reswrap utility (provided by FOX-toolkit.org) is dumping a file
+## content as C constant string.
 RESWRAP?= reswrap
 OPTIMFLAGS?= -Og
 DEBUGFLAGS= -g3
@@ -29,12 +33,12 @@ CPPHEADERS= $(wildcard *.hh)
 
 .PHONY: all objects clean indent homeinstall install
 
-.SECONDARY: guirefpersys_ui.cc
+.SECONDARY: guirefpersys_ui.c
 
 all: guigtkrps
 
 clean:
-	$(RM) *.o *~ *.orig guifltkrps guirefpersys_ui.cc a.out
+	$(RM) *.o *~ *.orig guifltkrps guirefpersys_ui.c a.out
 
 indent:
 	for f in *.hh ; do  $(ASTYLE) $(ASTYLEFLAGS) $$f ; done
@@ -47,8 +51,10 @@ install: guigtkrps
 	sudo /usr/bin/install  --backup  --preserve-timestamps  guifltkrps $(DESTDIR)/bin/
 
 
-guirefpersys_ui.cc: guirefpersys.ui
-	$(RESWRAP) -a -p gtkrpsui $^ > $@
+guirefpersys_ui.c: guirefpersys.ui
+	$(RESWRAP) -a -p gtkrpsui_ $^ > $@
 
+guirefpersys_ui.o: guirefpersys_ui.c
+	$(CC) -Og -c $^ -o $@
 guigtkrps: $(CPPOBJECTS) guirefpersys_ui.o
 	$(LINK.cc) -rdynamic -fPIE $(CPPOBJECTS)  guirefpersys_ui.o -o $@ -ldl $(shell  pkg-config --libs gtkmm-4.0)

@@ -57,8 +57,10 @@ gtkrps_fatal_stop_at(const char*fil, int lin)
           fil, lin,
           (int)getpid(), gtkrps_shortgit_id);
   abort();
+
 } // end gtkrps_fatal_stop_at
 
+extern "C" const char gtkrpsui_guirefpersys[];
 int
 main(int argc, char**argv)
 {
@@ -75,4 +77,5 @@ main(int argc, char**argv)
       gtkrps_show_version();
       exit (EXIT_SUCCESS);
     };
+  auto builder = Gtk::Builder::create_from_string(gtkrpsui_guirefpersys);
 } // end main

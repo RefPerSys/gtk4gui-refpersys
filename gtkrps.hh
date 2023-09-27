@@ -124,4 +124,7 @@ extern "C" [[noreturn]] void gtkrps_fatal_stop_at(const char*fil, int lin);
 #define GTKRPS_FATALOUT_AT(Fil,Lin,...) GTKRPS_FATALOUT_AT_BIS(Fil,Lin,##__VA_ARGS__)
 // typical usage would be GTKRPS_FATALOUT("x=" << x)
 #define GTKRPS_FATALOUT(...) GTKRPS_FATALOUT_AT(__FILE__,__LINE__,##__VA_ARGS__)
+
+
+extern "C" Gtk::Window*gtkrps_mainwin;
 #endif /*GTKRPS_INCLUDED_H*/
