@@ -82,6 +82,14 @@ main(int argc, char**argv)
       exit (EXIT_SUCCESS);
     };
   gtkrps_app = Gtk::Application::create ("org.refpersys.gtk4gui");
+#warning help needed here to parse program arguments
+#if 0 && badcode
+  gtkrps_app->add_main_option_entry(Gtk::OPTION_TYPE_BOOL,   "version",    'V',
+                                    ("Print version"),                       "");
+  gtkrps_app->add_main_option_entry(Gtk::Application::OPTION_TYPE_STRING,   "fifo-prefix",    'F',
+                                    ("set the prefix of FIFO used for communication"),
+                                    "");
+#endif
   Glib::ustring builder_str(gtkrpsui_guirefpersys);
   auto builder = Gtk::Builder::create_from_string(builder_str);
   gtkrps_app->signal_activate().connect([&] ()
@@ -92,3 +100,10 @@ main(int argc, char**argv)
   });
   return gtkrps_app->run(argc, argv);
 } // end main
+
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "make guigtkrps" ;;
+ ** End: ;;
+ ****************/
