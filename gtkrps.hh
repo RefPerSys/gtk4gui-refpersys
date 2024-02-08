@@ -61,6 +61,9 @@
 #include <unistr.h>
 
 
+/// from jsoncpp
+#include "json/json.h"
+
 // GTK4MM header
 #include "gtkmm.h"
 
@@ -93,30 +96,30 @@ extern "C" [[noreturn]] void gtkrps_fatal_stop_at(const char*fil, int lin);
   ("\033[5m")
 
 
-#define GTKRPS_FATAL_AT_BIS(Fil,Lin,Fmt,...) do {		\
-      bool ontty = gtkrps_stderr_istty;				\
-      fprintf(stderr, "\n\n"					\
-              "%s*** gtkrps FATAL:%s%s:%d: {%s}\n " Fmt "\n\n",	\
-              (ontty?GTKRPS_TERMINAL_BOLD_ESCAPE:""),		\
-              (ontty?GTKRPS_TERMINAL_NORMAL_ESCAPE:""),		\
-              Fil, Lin, __PRETTY_FUNCTION__,			\
-              ##__VA_ARGS__);					\
-    };								\
+#define GTKRPS_FATAL_AT_BIS(Fil,Lin,Fmt,...) do {               \
+      bool ontty = gtkrps_stderr_istty;                         \
+      fprintf(stderr, "\n\n"                                    \
+              "%s*** gtkrps FATAL:%s%s:%d: {%s}\n " Fmt "\n\n", \
+              (ontty?GTKRPS_TERMINAL_BOLD_ESCAPE:""),           \
+              (ontty?GTKRPS_TERMINAL_NORMAL_ESCAPE:""),         \
+              Fil, Lin, __PRETTY_FUNCTION__,                    \
+              ##__VA_ARGS__);                                   \
+    };                                                          \
   gtkrps_fatal_stop_at (Fil,Lin); } while(0)
 #define GTKRPS_FATAL_AT(Fil,Lin,Fmt,...) GTKRPS_FATAL_AT_BIS(Fil,Lin,Fmt,##__VA_ARGS__)
 #define GTKRPS_FATAL(Fmt,...) GTKRPS_FATAL_AT(__FILE__,__LINE__,Fmt,##__VA_ARGS__)
 
 
 
-#define GTKRPS_FATALOUT_AT_BIS(Fil,Lin,...) do {         \
+#define GTKRPS_FATALOUT_AT_BIS(Fil,Lin,...) do {	\
    std::ostringstream outl##Lin;                        \
    outl##Lin <<   __VA_ARGS__ << std::flush;            \
    outl##Lin.flush();                                   \
-   bool ontty = gtkrps_stderr_istty;                     \
+   bool ontty = gtkrps_stderr_istty;			\
    fprintf(stderr, "\n\n"                               \
-           "%s*** gtkrps FATAL:%s%s:%d: {%s}\n %s\n\n",  \
-           (ontty?GTKRPS_TERMINAL_BOLD_ESCAPE:""),       \
-           (ontty?GTKRPS_TERMINAL_NORMAL_ESCAPE:""),     \
+           "%s*** gtkrps FATAL:%s%s:%d: {%s}\n %s\n\n",	\
+           (ontty?GTKRPS_TERMINAL_BOLD_ESCAPE:""),	\
+           (ontty?GTKRPS_TERMINAL_NORMAL_ESCAPE:""),	\
            Fil, Lin, __PRETTY_FUNCTION__,               \
            outl##Lin.str().c_str());                    \
    gtkrps_fatal_stop_at (Fil,Lin); } while(0)

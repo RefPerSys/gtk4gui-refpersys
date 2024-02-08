@@ -1,15 +1,16 @@
 # file  RefPerSys/gtk4gui-refpersys/GNUmakefile
 # SPDX-License-Identifier: MIT
 #
-# © Copyright 2023 Basile Starynkevitch
+# © Copyright 2023 - 2024 Basile Starynkevitch
 #
 CC?= gcc-13
 CXX?= g++-13
 
+OUR_PACKAGES= gtkmm-4.0 jsoncpp
 ## the reswrap utility (provided by FOX-toolkit.org) is dumping a file
 ## content as C constant string.
 RESWRAP?= reswrap
-OPTIMFLAGS?= -Og
+OPTIMFLAGS?= -O1
 DEBUGFLAGS= -g3
 GTKRPS_GIT_ID:= $(shell ./do-generate-gitid.sh)
 GTKRPS_SHORTGIT_ID:= $(shell ./do-generate-gitid.sh -s)
@@ -20,7 +21,7 @@ GTKRPS_ARCH := $(shell /bin/uname -m)
 GTKRPS_OPERSYS := $(shell /bin/uname -o | /bin/sed 1s/[^a-zA-Z0-9_]/_/g )
 
 #XTRAPREPROFLAGS= -H
-PREPROFLAGS= $(XTRAPREPROFLAGS) $(shell pkg-config --cflags gtkmm-4.0)
+PREPROFLAGS= $(XTRAPREPROFLAGS) $(shell pkg-config --cflags $(OUR_PACKAGES))
 CXXFLAGS= -fPIE $(OPTIMFLAGS) $(PREPROFLAGS) \
      -DGIT_ID=\"$(GTKRPS_GIT_ID)\" \
      -DSHORTGIT_ID=\"$(GTKRPS_SHORTGIT_ID)\" \
@@ -58,4 +59,4 @@ guirefpersys_ui.o: guirefpersys_ui.c
 	$(CC) -Og -g -c $^ -o $@
 
 guigtkrps: $(CPPOBJECTS) guirefpersys_ui.o
-	$(LINK.cc) -rdynamic -fPIE $(CPPOBJECTS)  guirefpersys_ui.o -o $@ -ldl $(shell  pkg-config --libs gtkmm-4.0)
+	$(LINK.cc) -rdynamic -fPIE $(CPPOBJECTS)  guirefpersys_ui.o -o $@ -ldl $(shell  pkg-config --libs $(OUR_PACKAGES))

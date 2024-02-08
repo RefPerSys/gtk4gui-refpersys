@@ -2,7 +2,7 @@
 //  SPDX-License-Identifier: MIT
 
 /******
- * © Copyright 2023 Basile Starynkevitch
+ * © Copyright 2023 - 2024 Basile STARYNKEVITCH and Abishek CHAKRAVARTI
  *
  * A GTK4mm toolkit graphical interface (see fox-toolkit.org)
  * to the RefPerSys open source (GPLv3+ licensed) inference engine
@@ -84,7 +84,8 @@ main(int argc, char**argv)
   gtkrps_app = Gtk::Application::create ("org.refpersys.gtk4gui");
   Glib::ustring builder_str(gtkrpsui_guirefpersys);
   auto builder = Gtk::Builder::create_from_string(builder_str);
-  gtkrps_app->signal_activate().connect([&] () {
+  gtkrps_app->signal_activate().connect([&] ()
+  {
     gtkrps_mainwin = builder->get_widget<Gtk::Window>("app_window");
     gtkrps_app->add_window(*gtkrps_mainwin);
     gtkrps_mainwin->show();
