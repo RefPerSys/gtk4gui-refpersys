@@ -22,7 +22,7 @@ GTKRPS_OPERSYS := $(shell /bin/uname -o | /bin/sed 1s/[^a-zA-Z0-9_]/_/g )
 
 #XTRAPREPROFLAGS= -H
 PREPROFLAGS= $(XTRAPREPROFLAGS) $(shell pkg-config --cflags $(OUR_PACKAGES))
-CXXFLAGS= -fPIE $(OPTIMFLAGS) $(PREPROFLAGS) \
+CXXFLAGS= -fPIE -Wall -Wextra $(OPTIMFLAGS) $(PREPROFLAGS) \
      -DGIT_ID=\"$(GTKRPS_GIT_ID)\" \
      -DSHORTGIT_ID=\"$(GTKRPS_SHORTGIT_ID)\" \
      -DGTKRPS_HOST=\"$(GTKRPS_HOST)\" -DGTKRPS_ARCH=\"$(GTKRPS_ARCH)\" \
