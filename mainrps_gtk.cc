@@ -41,11 +41,8 @@ gtkrps_show_version(void)
   printf("\t arch: %s\n", gtkrps_arch);
   printf("\t OS: %s\n", gtkrps_opersys);
   printf("\t built: %s\n", gtkrps_timestamp);
-  /// for some reason, don't work!
-#if 0 && bad
   printf("\t GTKmm version: %d.%d.%d\n",
-         gtkmm_major_version, gtkmm_minor_version, gtkmm_micro_version);
-#endif
+         GTKMM_MAJOR_VERSION, GTKMM_MINOR_VERSION, GTKMM_MICRO_VERSION); /// Version from headers
 } // end gtkrps_show_version
 
 
